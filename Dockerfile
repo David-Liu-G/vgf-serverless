@@ -6,10 +6,10 @@ ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
 # Custom nodes
 RUN comfy node install --exit-on-fail comfyui-kjnodes
 RUN comfy node install --exit-on-fail comfyui-videohelpersuite
+# Skip vrgamedevgirl's requirements.txt — pulls in llama-cpp-python/demucs/librosa
+# that fail to wheel-build and we don't need for FastUnsharpSharpen.
 RUN cd /comfyui/custom_nodes && \
-    git clone https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git && \
-    cd comfyui-vrgamedevgirl && \
-    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    git clone https://github.com/vrgamegirl19/comfyui-vrgamedevgirl.git
 RUN cd /comfyui/custom_nodes && \
     git clone https://github.com/princepainter/ComfyUI-PainterI2Vadvanced.git && \
     cd ComfyUI-PainterI2Vadvanced && \
