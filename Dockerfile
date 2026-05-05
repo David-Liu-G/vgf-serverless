@@ -15,6 +15,8 @@ RUN cd /comfyui/custom_nodes && \
 
 # Bake models into the image — eliminates region-lock from network volumes.
 # Total ~41 GB across vae/diffusion_models/text_encoders/loras.
+USER root
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 WORKDIR /comfyui/models
 
 RUN curl -fL --create-dirs -o vae/wan_2.1_vae.safetensors \
