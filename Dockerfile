@@ -44,4 +44,4 @@ RUN pip install requests runpod
 COPY workflow_api.json /workflow_api.json
 COPY rp_handler.py /rp_handler.py
 
-CMD ["/bin/bash", "-c", "cd /comfyui && python main.py --listen 0.0.0.0 --port 8188 & python /rp_handler.py"]
+CMD ["/bin/bash", "-c", "python /rp_handler.py 2>&1 & cd /comfyui && exec python main.py --listen 0.0.0.0 --port 8188"]
