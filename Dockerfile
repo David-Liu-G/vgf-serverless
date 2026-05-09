@@ -13,6 +13,18 @@ RUN cd /comfyui/custom_nodes && \
     cd ComfyUI-PainterI2Vadvanced && \
     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+# Wan 2.2 Animate support — kijai's wrapper has WanVideoAnimate nodes (real motion-transfer)
+RUN cd /comfyui/custom_nodes && \
+    git clone https://github.com/kijai/ComfyUI-WanVideoWrapper.git && \
+    cd ComfyUI-WanVideoWrapper && \
+    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+# Pose/depth preprocessors — extracts skeleton from reference videos for motion transfer
+RUN cd /comfyui/custom_nodes && \
+    git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git && \
+    cd comfyui_controlnet_aux && \
+    if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
 # Bake models into the image — eliminates region-lock from network volumes.
 # Total ~41 GB across vae/diffusion_models/text_encoders/loras.
 USER root
@@ -39,6 +51,14 @@ RUN curl -fL --create-dirs -o loras/wan2.2_i2v_lightx2v_4steps_lora_v1_high_nois
     "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_high_noise.safetensors"
 RUN curl -fL --create-dirs -o loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors \
     "https://huggingface.co/Comfy-Org/Wan_2.2_ComfyUI_Repackaged/resolve/main/split_files/loras/wan2.2_i2v_lightx2v_4steps_lora_v1_low_noise.safetensors"
+
+# Wan 2.2 Animate model (motion-transfer / character animation from reference video, 17.3 GB)
+RUN curl -fL --create-dirs -o diffusion_models/Wan2_2-Animate-14B_fp8_scaled_e4m3fn_KJ_v2.safetensors \
+    "https://huggingface.co/Kijai/WanVideo_comfy_fp8_scaled/resolve/main/Wan22Animate/Wan2_2-Animate-14B_fp8_scaled_e4m3fn_KJ_v2.safetensors"
+
+# CLIP Vision H — face/identity encoder, used by Wan Animate
+RUN curl -fL --create-dirs -o clip_vision/clip_vision_h.safetensors \
+    "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/clip_vision/clip_vision_h.safetensors"
 
 RUN pip install requests runpod
 COPY workflow_api.json /workflow_api.json
