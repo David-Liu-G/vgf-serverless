@@ -37,8 +37,10 @@ RUN curl -fL --create-dirs -o vae/wan_2.1_vae.safetensors \
 RUN curl -fL --create-dirs -o diffusion_models/Wan2.2_Remix_NSFW_i2v_14b_high_lighting_fp8_e4m3fn_v2.1.safetensors \
     "https://huggingface.co/FX-FeiHou/wan2.2-Remix/resolve/main/NSFW/Wan2.2_Remix_NSFW_i2v_14b_high_lighting_fp8_e4m3fn_v2.1.safetensors"
 
-RUN curl -fL --create-dirs -o diffusion_models/Wan2.2_Remix_NSFW_i2v_14b_low_lighting_fp8_e4m3fn_v2.1.safetensors \
-    "https://huggingface.co/FX-FeiHou/wan2.2-Remix/resolve/main/NSFW/Wan2.2_Remix_NSFW_i2v_14b_low_lighting_fp8_e4m3fn_v2.1.safetensors"
+# Skipping low-lighting variant — saves 14 GB. Was used for the dual-lighting 2-pass
+# refinement workflow; the Animate motion-transfer pipeline only needs high-lighting.
+# RUN curl -fL --create-dirs -o diffusion_models/Wan2.2_Remix_NSFW_i2v_14b_low_lighting_fp8_e4m3fn_v2.1.safetensors \
+#     "https://huggingface.co/FX-FeiHou/wan2.2-Remix/resolve/main/NSFW/Wan2.2_Remix_NSFW_i2v_14b_low_lighting_fp8_e4m3fn_v2.1.safetensors"
 
 RUN curl -fL --create-dirs -o text_encoders/nsfw_wan_umt5-xxl_bf16_fixed.safetensors \
     "https://huggingface.co/zootkitty/nsfw_wan_umt5-xxl_bf16_fixed/resolve/main/nsfw_wan_umt5-xxl_bf16_fixed.safetensors"
